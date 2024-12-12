@@ -33,17 +33,18 @@ def split():
     num_data = len(train_set)
     num_to_sample = np.int(np.floor(num_data * args.complete_ratio))
     samp_inds = np.random.choice(num_data, num_to_sample, replace=False)
-     
+    train_set_keys = list(train_set.keys())
+    
     # extract complete samples
     train_complete_set = []
     for ind in samp_inds:
-        train_complete_set.append(train_set[ind])
+        train_complete_set.append(train_set[train_set_keys[ind-1]])
     
     # extract missing samples
     unsamp_inds = list(set(i for i in range(num_data)) - set(samp_inds))
     train_missing_set = []
     for ind in unsamp_inds:
-        train_missing_set.append(train_set[ind])
+        train_missing_set.append(train_set[train_set_keys[ind-1]])
     
     if not os.path.exists(DATA_PATH + '/resplit/group_{}'.format(args.group_id)):
         os.mkdir(DATA_PATH + '/resplit/group_{}'.format(args.group_id))
